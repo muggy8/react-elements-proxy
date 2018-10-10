@@ -1,4 +1,5 @@
 var REP = (function(){
+	var reactElementSymbol = React.createElement("div", {}).$$typeof
     var proxyProto = new Proxy(Object.prototype, {
         get: function(proto, prop, context){
             if (proto[prop]){
@@ -9,13 +10,13 @@ var REP = (function(){
             }
             else {
                 // if we got here we know that this prop isn't in the mask or the elements object so we can create it
-                return context[prop] = function(attrOrChildren = null, children){
-                    var attr = attrOrChildren
-                    if (!children){
-                        children = attrOrChildren
-                        attr = null
-                    }
-                    return React.createElement(prop, attrOrChildren, children)
+                return context[prop] = function(){
+					var args = Array.prototype.slice.call(arguments)
+					if (!args[0] || args[0].$$typeof === reactElementSymbol){
+						args.unshift({})
+					}
+					args.unshift(prop)
+                    return React.createElement.apply(React, args)
                 }
             }
         }
@@ -26,7 +27,7 @@ var REP = (function(){
             value: Object.prototype[name]
         })
     })
-    return Object.assign(Object.create(mask), React.DOM)
+    return Object.assign(Object.create(mask), React.DOM || {}) // if React.DOM is around we can just use that if not then whatever
 })()
 if (typeof module !== 'undefined'){
     module.exports = REP
