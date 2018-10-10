@@ -12,7 +12,11 @@ var REP = (function(){
                 // if we got here we know that this prop isn't in the mask or the elements object so we can create it
                 return context[prop] = function(){
 					var args = Array.prototype.slice.call(arguments)
-					if (!args[0] || args[0].$$typeof === reactElementSymbol){
+					if (
+						!Object.prototype.hasOwnProperty.call(args, "0") ||
+						args[0].$$typeof === reactElementSymbol ||
+						(typeof args[0] !== "object" && args[0])
+					){
 						args.unshift({})
 					}
 					args.unshift(prop)
