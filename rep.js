@@ -15,7 +15,8 @@ var REP = (function(){
 					if (
 						!Object.prototype.hasOwnProperty.call(args, "0") ||
 						args[0].$$typeof === reactElementSymbol ||
-						(typeof args[0] !== "object" && args[0])
+						(typeof args[0] !== "object" && args[0]) ||
+                        Array.isArray(args[0])
 					){
 						args.unshift({})
 					}
