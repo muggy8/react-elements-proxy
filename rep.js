@@ -32,6 +32,7 @@ var REP = (function(){
             value: Object.prototype[name]
         })
     })
+    return Object.create(mask)
 })()
 if (typeof module !== 'undefined'){
     module.exports = REP
