@@ -32,7 +32,6 @@ var REP = (function(){
             value: Object.prototype[name]
         })
     })
-    return Object.assign(Object.create(mask), React.DOM || {}) // if React.DOM is around we can just use that if not then whatever
 })()
 if (typeof module !== 'undefined'){
     module.exports = REP
